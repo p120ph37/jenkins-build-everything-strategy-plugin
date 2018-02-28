@@ -1,11 +1,12 @@
 # jenkins-build-everything-strategy-plugin
 Build all multibranch refs, including tags
 
-## Build and deploy in Jenkins
+## Build
+```
+# in project directory
+docker run  -v <proj_dir>:/app/ -w /app/ maven mvn install
+```
+find the build artifact in <proj_dir>/target/build-everything-strategy.hpi
 
-docker run -it maven bash # Start a maven container
-git clone https://github.com/AngryBytes/jenkins-build-everything-strategy-plugin.git # Clone this repo
-cd jenkins-build-everything-strategy-plugin # go inside projet
-mvn install # Build
-Don't close this container, open another terminal and get the file /jenkins-build-everything-strategy-plugin/target/build-everything-strategy.hpi with docker cp
-Upload this file to https://jenkins/pluginManager/advanced
+## Deploy
+Upload hpi file to https://jenkins/pluginManager/advanced
