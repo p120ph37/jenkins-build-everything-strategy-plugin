@@ -1,0 +1,21 @@
+sudo: false
+language: java
+cache:
+  directories:
+  - $HOME/.m2
+before_deploy:
+  - export POM_NAME=$(mvn -Dexec.executable='echo' -Dexec.args='${project.artifactId}' --non-recursive exec:exec -q)
+  - export POM_VERSION=$(mvn -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec -q)
+  - export TRAVIS_TAG=$POM_VERSION # feed a hypothetical tag to the github releases module
+deploy:
+  provider: releases
+  api_key:
+    secure: "biGccxCoC5jfj+1sRGvm1Xb34L2/+5GOaPVCUIDna4i0018JmtNoktaWKyWJAfgPA9yPgJzCQKLp3RrcYYMNMPBEUeIGhMWUjs1yCp2dAJkPdVvrrIOBxm9/enrFz3tUT9LCb7zfRJlmqO9pfnNMPGxwu615MtN2sZRf7ewouitM40N4VtnthwRcla/2HNqh8CIv70q8EzRzrpv2WQ0cdByyrVE+gmVq8vhg/BBsnh7XY5ejWRIvZXQrx2LdiBmRyLCOz/AlpadUqbyZg13r70PG+D2gCTLh5/FhfNLGLU4OMw+V631x+wvt2d5OwT26do5+89uQZIM99yO+8FckQGKIif9Ljk6xCGKKdN0xPP1oQMCnu4UPK4RuJgD4eaKsCLYdb90LZKW0AsG3AXGZbZlkZFOQm8GKYJsmD8aGUlH2EIAlqeuypDwJbkrOksM9SFpAB92Byni8+6W2hvx7JeSH46t2Wz2O7vaKGukjYxGOnyUibiqHZHhVbln3EcZ3RKQ4CaYg8urLk7UknD5WZ+wdrGiQFnjpemAl41ZwJoyr+LoWAi/YKSolid8piEKYIDkkf8PAvWTBUbXNHBS/XRDc5qklkEseWesCEfVvt3Sb3J/qapyswB4pOZqDjNhBdMsnkzL3iKzxUunssBStJ8R436aUJ58cu4Kpgz3rz4s="
+  tag_name: $TRAVIS_TAG
+  description: $POM_NAME $POM_VERSION
+  file_glob: true
+  file: target/*.jar
+  draft: false
+  prerelease: true
+  overwrite: true
+  skip_cleanup: true
